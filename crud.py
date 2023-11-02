@@ -79,8 +79,8 @@ def main():
         query = """
             SELECT b.booking_id, m.name, c.description, b.status
             FROM bookings b
-            JOIN Members m ON b.member_id = m.member_id
-            JOIN Classes c ON b.class_id = c.class_id;
+            JOIN members m ON b.member_id = m.member_id
+            JOIN classes c ON b.class_id = c.class_id;
             """
         bookings = read_records(db, query)
         if bookings:
