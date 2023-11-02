@@ -54,7 +54,7 @@ def delete_record(db, query, id):
 
 
 def main():
-    db = create_server_connection("localhost", "root", "1005", "gymmaster")
+    db = create_server_connection("34.70.109.179", "derek", "1005", "gymmaster")
     st.title('🔥💪🏼🎧 Gym Master')
 
     st.sidebar.header('📑 Gym manager')
