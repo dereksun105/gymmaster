@@ -69,7 +69,7 @@ def main():
             submit_button = st.form_submit_button(label='Add Booking')
             if submit_button:
                 add_query = """
-                INSERT INTO Bookings (member_id, class_id, status) VALUES (%s, %s, %s);
+                INSERT INTO bookings (member_id, class_id, status) VALUES (%s, %s, %s);
                 """
                 execute_query(db, add_query, (member_id, class_id, status))
 
@@ -78,7 +78,7 @@ def main():
         st.subheader("Read booking")
         query = """
             SELECT b.booking_id, m.name, c.description, b.status
-            FROM Bookings b
+            FROM bookings b
             JOIN Members m ON b.member_id = m.member_id
             JOIN Classes c ON b.class_id = c.class_id;
             """
@@ -97,7 +97,7 @@ def main():
             submit_button = st.form_submit_button(label='Update Booking')
             if submit_button:
                 edit_query = """
-                UPDATE Bookings SET status = %s WHERE booking_id = %s;
+                UPDATE bookings SET status = %s WHERE booking_id = %s;
                 """
                 execute_query(db, edit_query, (new_status, booking_id))
 
@@ -107,7 +107,7 @@ def main():
             booking_id_to_delete = st.number_input("Booking ID to Delete", min_value=1, step=1)
             delete_button = st.form_submit_button(label='Delete Booking')
             if delete_button:
-                delete_query = "DELETE FROM Bookings WHERE booking_id = %s;"
+                delete_query = "DELETE FROM bookings WHERE booking_id = %s;"
                 delete_record(db, delete_query, booking_id_to_delete)
 
     # Include the current year in the footer
