@@ -1,3 +1,4 @@
+# Import necessary libraries
 import streamlit as st
 import pandas as pd
 import mysql.connector
@@ -6,11 +7,7 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Enum,
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# If you are using any other specific features or functions, you should import them as well.
-
-
 # -- Establish a connection to MySQL Server -->
-
 def create_server_connection(host_name, user_name, user_password, db_name):
     db = None
     try:
@@ -26,17 +23,19 @@ def create_server_connection(host_name, user_name, user_password, db_name):
         st.error(f"Error: '{err}'")
     return db
 
-
+# SQLAlchemy ORM classes for database tables
 Base = declarative_base()
 
 class Member(Base):
     __tablename__ = 'members'
+    # Define columns for the 'members' table
     member_id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(255))
     email = Column(String(255), unique=True)
 
 class Class(Base):
     __tablename__ = 'classes'
+    # Define columns for the 'classes' table
     class_id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(Date)
     time = Column(Time)
@@ -44,7 +43,7 @@ class Class(Base):
     description = Column(Text)
     type_id = Column(Integer, ForeignKey('classtypes.type_id'))
     room_id = Column(Integer, ForeignKey('rooms.room_id'))
-
+# ... (similar definitions for Booking, ClassType, and Room classes) ...
 class Booking(Base):
     __tablename__ = 'bookings'
     booking_id = Column(Integer, primary_key=True, autoincrement=True)
@@ -65,7 +64,7 @@ class Room(Base):
     number = Column(String(255))
     max_capacity = Column(Integer)
 
-
+# Function to read records with optional filters for class type, member name, and booking status
 def read_records_with_filters(db, class_type_filter, member_name_filter, booking_status_filter):
     cursor = db.cursor()
     query = """
@@ -88,6 +87,7 @@ def read_records_with_filters(db, class_type_filter, member_name_filter, booking
         st.error(f"Error: '{err}'")
         return []
 
+# Function to edit a booking with transaction handling
 def edit_booking_with_transaction(session, booking_id, new_status):
     try:
         # Fetch the booking from the database
@@ -105,7 +105,7 @@ def edit_booking_with_transaction(session, booking_id, new_status):
         st.error(f"Error: '{e}'")
         return False
 
-
+# Function to delete a record from the database
 def delete_record(db, query, id):
     cursor = db.cursor()
     try:
@@ -115,6 +115,7 @@ def delete_record(db, query, id):
     except Exception as err:
         st.error(f"Error: '{err}'")
 
+# Function to add a booking with transaction handling
 def add_booking_with_transaction(session, member_id, class_id, status):
     try:
         new_booking = Booking(member_id=member_id, class_id=class_id, status=status)
@@ -126,6 +127,7 @@ def add_booking_with_transaction(session, member_id, class_id, status):
         session.rollback()  # Rollback the transaction in case of error
         return False
 
+# Main function to run the Streamlit app
 def main():
     engine = create_engine('mysql+mysqlconnector://derek:1005@34.70.109.179/gymmaster')
     Session = sessionmaker(bind=engine)
