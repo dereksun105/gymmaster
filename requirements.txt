@@ -1,6 +1,5 @@
-streamlit~=1.27.2
-mysql-connector-python~=8.2.0
-pandas~=2.1.2
-mysql~=0.0.3
-sqlalchemy~=2.0.22
-datetime
+streamlit
+pandas
+mysql
+mysql-connector-python
+SQLAlchemy
